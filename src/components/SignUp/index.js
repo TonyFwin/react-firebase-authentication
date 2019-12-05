@@ -6,4 +6,4 @@ const SignUp = () => (
   </div>
 );
 
-export default SigSignUpnOut;
+export default SignUp;
