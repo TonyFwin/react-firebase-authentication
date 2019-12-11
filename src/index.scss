@@ -40,7 +40,7 @@ li {
   border-bottom: 1px solid #ddd;
   ul {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     list-style: none;
     padding: 0.5rem calc((100vw - 550px - 0.5rem) / 2);
   }
