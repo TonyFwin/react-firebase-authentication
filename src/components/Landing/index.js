@@ -1,9 +1,5 @@
 import React from 'react';
 
-function randomNum(num) {
-  return Math.floor(Math.random() * num);
-}
-
 const list = [
   {
     name: 'Tony Nguyen',
