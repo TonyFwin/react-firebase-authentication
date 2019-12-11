@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Session = () => (
-  <div>
+  <main>
     <h1>Session</h1>
-  </div>
+  </main>
 );
 
 export default Session;

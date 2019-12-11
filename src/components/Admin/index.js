@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Admin = () => (
-  <div>
+  <main>
     <h1>Admin</h1>
-  </div>
+  </main>
 );
 
 export default Admin;

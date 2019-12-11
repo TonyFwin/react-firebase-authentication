@@ -7,11 +7,11 @@ import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const SignInPage = () => (
-  <div>
+  <main>
     <h1>SignIn</h1>
     <SignInForm />
     <SignUpLink />
-  </div>
+  </main>
 );
 
 const INITIAL_STATE = {

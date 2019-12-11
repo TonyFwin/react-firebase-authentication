@@ -1,9 +1,9 @@
 import React from 'react';
 
 const Account = () => (
-  <div>
+  <main>
     <h1>Account</h1>
-  </div>
+  </main>
 );
 
 export default Account;
