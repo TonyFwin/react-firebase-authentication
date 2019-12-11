@@ -1,9 +1,9 @@
 import React from 'react';
 
 const PasswordChange = () => (
-  <main>
+  <div>
     <h1>PasswordChange</h1>
-  </main>
+  </div>
 );
 
 export default PasswordChange;

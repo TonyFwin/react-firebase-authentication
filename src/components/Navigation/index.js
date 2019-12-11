@@ -5,26 +5,28 @@ import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
 
 const Navigation = ({ authUser }) => (
-  <header>{authUser ? <NavigationAuth /> : <NavigationNonAuth />}</header>
+  <header>
+    <nav className='menu'>
+      {authUser ? <NavigationAuth /> : <NavigationNonAuth />}
+    </nav>
+  </header>
 );
 
 const NavigationAuth = () => (
-  <nav className='menu'>
-    <ul>
-      <li>
-        <Link to={ROUTES.LANDING}>Landing</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.HOME}>Home</Link>
-      </li>
-      <li>
-        <Link to={ROUTES.ACCOUNT}>Account</Link>
-      </li>
-      <li>
-        <SignOutButton />
-      </li>
-    </ul>
-  </nav>
+  <ul>
+    <li>
+      <Link to={ROUTES.LANDING}>Landing</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.HOME}>Home</Link>
+    </li>
+    <li>
+      <Link to={ROUTES.ACCOUNT}>Account</Link>
+    </li>
+    <li>
+      <SignOutButton />
+    </li>
+  </ul>
 );
 
 const NavigationNonAuth = () => (
