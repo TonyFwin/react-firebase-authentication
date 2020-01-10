@@ -27,6 +27,9 @@ class Firebase {
   doSignInWithEmailAndPassword = (email, password) =>
     this.auth.signInWithEmailAndPassword(email, password);
 
+  doSendSignInLinkToEmail = (email, options) =>
+    this.auth.sendSignInLinkToEmail(email, options);
+
   doSendEmailVerification = () =>
     this.auth.currentUser.sendEmailVerification({
       url: process.env.REACT_APP_CONFIRMATION_EMAIL_REDIRECT
@@ -74,6 +77,15 @@ class Firebase {
   user = uid => this.db.ref(`users/${uid}`);
 
   users = () => this.db.ref(`users`);
+
+  // *** Pod API ***
+  pod = uid => this.db.ref(`pods/${uid}`);
+
+  pods = () => this.db.ref('pods');
+
+  collection = uid => this.db.ref(`collections/${uid}`);
+
+  collections = () => this.db.ref('collections');
 }
 
 export default Firebase;
