@@ -1,59 +1,39 @@
 import React from 'react';
 
-const list = [
-  {
-    name: 'Tony Nguyen',
-    pod: 'Web',
-    title: 'Web Developer',
-    imageUrl: 'https://randomuser.me/api/portraits/men/30.jpg'
-  },
-  {
-    name: 'Tiffany Mutchler',
-    pod: 'Valkyrie',
-    title: 'Account Executive',
-    imageUrl: 'https://randomuser.me/api/portraits/women/34.jpg'
-  },
-  {
-    name: 'Jay Bachmayer',
-    pod: 'Enclave',
-    title: 'Growth Strategist',
-    imageUrl: 'https://randomuser.me/api/portraits/men/51.jpg'
-  },
-  {
-    name: 'Katie Levitt',
-    pod: 'Pickle',
-    title: 'Creative Director',
-    imageUrl: 'https://randomuser.me/api/portraits/women/3.jpg'
-  }
-];
+import { useFirebase } from '../Firebase';
 
-class Landing extends React.Component {
-  constructor(props) {
-    super(props);
+const Landing = props => {
+  const [users, setUsers] = React.useState(null);
 
-    this.state = {
-      list: list
-    };
-  }
-  render() {
-    return (
-      <div>
-        <h1>Landing</h1>
-        {this.state.list.map((item, index) => (
-          <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
-            <div>
-              <img src={item.imageUrl} alt={item.title} />
-            </div>
-            <span>
-              <a href='#'>{item.name}</a>
-            </span>
-            <span>{item.title}</span>
-            <span>{item.pod}</span>
-          </div>
-        ))}
-      </div>
-    );
-  }
-}
+  const firebase = useFirebase();
+
+  React.useEffect(() => {
+    firebase.users().on('value', snapshot => {
+      const userObject = snapshot.val();
+      setUsers(
+        Object.keys(userObject).map(userId => {
+          return {
+            uid: userId,
+            ...userObject[userId]
+          };
+        })
+      );
+    });
+  }, [firebase]);
+
+  if (!users) return null;
+
+  console.log({ users });
+  return (
+    <div>
+      <h1>Landing</h1>
+      {users.map((user, index) => (
+        <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
+          <span>{user.username}</span> <span>{user.email}</span>
+        </div>
+      ))}
+    </div>
+  );
+};
 
 export default Landing;

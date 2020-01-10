@@ -7,17 +7,23 @@ import { withAuthorization, withEmailVerification } from '../Session';
 import * as ROLES from '../../constants/roles';
 import * as ROUTES from '../../constants/routes';
 
-const AdminPage = () => (
-  <div>
-    <h1>Admin</h1>
-    <p>The Admin Page is accessible by every signed in admin user.</p>
+import CreateUser from '../Admin/CreateUser';
 
-    <Switch>
-      <Route exact path={ROUTES.ADMIN_DETAILS} component={UserItem} />
-      <Route exact path={ROUTES.ADMIN} component={UserList} />
-    </Switch>
-  </div>
-);
+const AdminPage = () => {
+  return (
+    <div>
+      <h1>Admin</h1>
+      <p>The Admin Page is accessible by every signed in admin user.</p>
+      <Link to={ROUTES.ADMIN_CREATE}>Create New</Link>
+
+      <Switch>
+        <Route exact path={ROUTES.ADMIN_CREATE} component={CreateUser} />
+        <Route exact path={ROUTES.ADMIN_DETAILS} component={UserItem} />
+        <Route exact path={ROUTES.ADMIN} component={UserList} />
+      </Switch>
+    </div>
+  );
+};
 
 class UserListBase extends Component {
   constructor(props) {
@@ -68,7 +74,8 @@ class UserListBase extends Component {
                 <strong>E-Mail:</strong> {user.email}
               </span>
               <span>
-                <strong>Username:</strong> {user.username}
+                <strong>Username:</strong>{' '}
+                {user.username ? user.username : user.name}
               </span>
               <span>
                 <Link
