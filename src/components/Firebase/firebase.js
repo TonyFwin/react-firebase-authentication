@@ -83,9 +83,11 @@ class Firebase {
 
   pods = () => this.db.ref('pods');
 
-  collection = uid => this.db.ref(`collections/${uid}`);
+  // *** Message API ***
 
-  collections = () => this.db.ref('collections');
+  message = uid => this.db.ref(`messages/${uid}`);
+
+  messages = () => this.db.ref('messages');
 }
 
 export default Firebase;

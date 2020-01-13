@@ -1,117 +1,119 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
-import { withAuthorization, withEmailVerification } from '../Session';
-import { withFirebase } from '../Firebase';
+import {
+  AuthUserContext,
+  withAuthorization,
+  withEmailVerification
+} from '../Session';
 
-// *** Turn into USER LIST POKEDEX PAGE
+import { withFirebase } from '../Firebase';
 
 const HomePage = () => (
   <div>
-    <h1>Home</h1>
-    <p>The Home Page is accessible only by signed in users.</p>
-    <div>
-      <h2>Pods:</h2>
-      <Pods />
-    </div>
+    <h1>Home Page</h1>
+    <p>
+      Only accessible by signed in users, user may leave a message for other
+      users
+    </p>
+
+    <Messages />
   </div>
 );
 
-class PodsBase extends Component {
+class MessagesBase extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      podTitle: '',
+      text: '',
       loading: false,
-      pods: []
+      messages: []
     };
   }
 
   componentDidMount() {
     this.setState({ loading: true });
 
-    this.props.firebase.pods().on('value', snapshot => {
-      const podObject = snapshot.val();
+    this.props.firebase.messages().on('value', snapshot => {
+      const messageObject = snapshot.val();
 
-      if (podObject) {
-        const podList = Object.keys(podObject).map(key => ({
-          ...podObject[key],
+      if (messageObject) {
+        const messageList = Object.keys(messageObject).map(key => ({
+          ...messageObject[key],
           uid: key
         }));
-        this.setState({ pods: podList, loading: false });
+
+        this.setState({
+          messages: messageList,
+          loading: false
+        });
       } else {
-        this.setState({ pods: null, loading: false });
+        this.setState({ messages: null, loading: false });
       }
     });
   }
 
   componentWillUnmount() {
-    this.props.firebase.pods().off();
+    this.props.firebase.messages().off();
   }
 
-  onChangePodTitle = event => {
-    this.setState({ podTitle: event.target.value });
+  onChangeText = event => {
+    this.setState({ text: event.target.value });
   };
 
-  onCreatePod = event => {
-    this.props.firebase.pods().push({
-      podTitle: this.state.podTitle
+  onCreateMessage = (event, authUser) => {
+    this.props.firebase.messages().push({
+      text: this.state.text,
+      userId: authUser.uid
     });
 
-    this.setState({ podTitle: '' });
+    this.setState({ text: '' });
 
     event.preventDefault();
   };
 
-  onRemovePod = uid => {
-    this.props.firebase.pod(uid).remove();
-  };
-
   render() {
-    const { podTitle, pods, loading } = this.state;
+    const { text, messages, loading } = this.state;
 
     return (
-      <div>
-        {loading && <div>Loading...</div>}
+      <AuthUserContext.Consumer>
+        {authUser => (
+          <div>
+            {loading && <div>Loading...</div>}
 
-        {pods ? (
-          <PodList pods={pods} onRemovePod={this.onRemovePod} />
-        ) : (
-          <div>There are no pods...</div>
+            {messages ? (
+              <MessageList messages={messages} />
+            ) : (
+              <div>There are no messages</div>
+            )}
+
+            <form onSubmit={event => this.onCreateMessage(event, authUser)}>
+              <input type='text' value={text} onChange={this.onChangeText} />
+              <button type='submit'>Send</button>
+            </form>
+          </div>
         )}
-
-        <form onSubmit={this.onCreatePod}>
-          <input
-            type='text'
-            value={podTitle}
-            onChange={this.onChangePodTitle}
-          />
-          <button type='submit'>Send</button>
-        </form>
-      </div>
+      </AuthUserContext.Consumer>
     );
   }
 }
 
-const PodList = ({ pods, onRemovePod }) => (
+const MessageList = ({ messages }) => (
   <ul>
-    {pods.map(pod => (
-      <PodItem key={pod.uid} pod={pod} onRemovePod={onRemovePod} />
+    {messages.map(message => (
+      <MessageItem key={message.uid} message={message} />
     ))}
   </ul>
 );
 
-const PodItem = ({ pod, onRemovePod }) => (
+const MessageItem = ({ message }) => (
   <li>
-    <strong>{pod.podTitle}</strong>
-    <button type='button' onClick={() => onRemovePod(pod.uid)}>
-      Delete
-    </button>
+    <strong>{message.userId}</strong> {message.text}
   </li>
 );
 
-const Pods = withFirebase(PodsBase);
+const Messages = withFirebase(MessagesBase);
 
 const condition = authUser => !!authUser;
 
