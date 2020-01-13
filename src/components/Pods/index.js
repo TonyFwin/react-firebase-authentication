@@ -8,7 +8,6 @@ const PodsPage = () => (
   <div>
     <h1>Pods</h1>
     <div>
-      <h2>Pods:</h2>
       <Pods />
     </div>
   </div>
