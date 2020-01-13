@@ -23,7 +23,6 @@ const Landing = props => {
 
   if (!users) return null;
 
-  console.log({ users });
   return (
     <div>
       <h1>Landing</h1>
