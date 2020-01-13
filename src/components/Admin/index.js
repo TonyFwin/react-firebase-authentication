@@ -6,8 +6,7 @@ import { withAuthorization, withEmailVerification } from '../Session';
 import * as ROLES from '../../constants/roles';
 import * as ROUTES from '../../constants/routes';
 
-import { UserList, UserItem } from '../Users';
-import CreateUser from '../Admin/CreateUser';
+import { UserList, UserItem, CreateUser } from '../Users';
 
 const AdminPage = () => {
   return (

@@ -83,7 +83,9 @@ const CreateUser = () => {
         id='pods'
       >
         {pods.map(pod => (
-          <option value={pod.uid}>{pod.podTitle}</option>
+          <option key={pod.uid} value={pod.uid}>
+            {pod.podTitle}
+          </option>
         ))}
       </select>
       <button type='submit'>Submit</button>
