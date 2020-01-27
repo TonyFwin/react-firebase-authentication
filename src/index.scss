@@ -50,7 +50,6 @@ main {
   grid-area: content;
   margin: 2rem auto 4rem;
   max-width: 90vw;
-  width: 500px;
 }
 
 .grid-wrapper {
@@ -59,4 +58,35 @@ main {
   grid-template-areas:
     'nav'
     'content';
+}
+
+// Landing / user page
+.user-grid {
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  grid-row-gap: 1rem;
+}
+.usercard {
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  background: white;
+  text-align: left;
+  padding: 0.5em;
+}
+
+// Pods
+
+.pod-list {
+  display: grid;
+  padding: 1rem;
+  grid-template-columns: repeat(5, 1fr);
+  grid-row-gap: 1rem;
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding-right: 10px;
+    align-items: center;
+  }
 }

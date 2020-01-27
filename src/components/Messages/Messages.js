@@ -92,7 +92,7 @@ class Messages extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div>
+          <div className='usercard'>
             {!loading && messages && (
               <button type='button' onClick={this.onNextPage}>
                 More

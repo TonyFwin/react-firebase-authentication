@@ -3,11 +3,12 @@ import { useFirebase } from '../Firebase';
 import { useHistory } from 'react-router-dom';
 
 const CreateUser = () => {
-  const [name, setName] = React.useState('');
+  const [username, setUsername] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [pod, setPod] = React.useState('');
   const [pods, setPods] = React.useState([]);
   const [error, setError] = React.useState(null);
+  const [gender, setGender] = React.useState('male');
 
   const history = useHistory();
 
@@ -28,18 +29,21 @@ const CreateUser = () => {
         setPods(null);
       }
     });
+    return () => {
+      firebase.pods().off();
+    };
   }, [firebase]);
 
   const handleSubmit = e => {
     e.preventDefault();
     firebase
       .users()
-      .push({ name, email })
+      .push({ username, email, gender, pod })
       .then(
         success => {
           firebase
             .doSendSignInLinkToEmail(email, {
-              url: 'http://localhost:3000/email-signup',
+              url: 'http://localhost:3000/signup',
               handleCodeInApp: true
             })
             .then(() => {
@@ -66,8 +70,8 @@ const CreateUser = () => {
     <form onSubmit={handleSubmit}>
       <input
         type='text'
-        value={name}
-        onChange={e => setName(e.currentTarget.value)}
+        value={username}
+        onChange={e => setUsername(e.currentTarget.value)}
         placeholder='Full Name'
       />
       <input
@@ -76,6 +80,14 @@ const CreateUser = () => {
         onChange={e => setEmail(e.currentTarget.value)}
         placeholder='E-mail'
       />
+      <select
+        onChange={e => setGender(e.target.value)}
+        name='gender'
+        value={gender}
+      >
+        <option name='male'>Male</option>
+        <option value='female'>Female</option>
+      </select>
       <select
         onChange={e => setPod(e.currentTarget.value)}
         value={pod}

@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { compose } from 'recompose';
 
+import PodList from './PodList';
+
 import { withAuthorization, withEmailVerification } from '../Session';
 import { withFirebase } from '../Firebase';
 
@@ -64,6 +66,15 @@ class PodsBase extends Component {
     this.props.firebase.pod(uid).remove();
   };
 
+  onEditPod = (pod, podTitle) => {
+    const { uid, ...podSnapshot } = pod;
+
+    this.props.firebase.pod(pod.uid).set({
+      ...podSnapshot,
+      podTitle
+    });
+  };
+
   render() {
     const { podTitle, pods, loading } = this.state;
 
@@ -72,12 +83,16 @@ class PodsBase extends Component {
         {loading && <div>Loading...</div>}
 
         {pods ? (
-          <PodList pods={pods} onRemovePod={this.onRemovePod} />
+          <PodList
+            pods={pods}
+            onEditPod={this.onEditPod}
+            onRemovePod={this.onRemovePod}
+          />
         ) : (
           <div>There are no pods...</div>
         )}
 
-        <form onSubmit={this.onCreatePod}>
+        <form onSubmit={event => this.onCreatePod(event)}>
           <input
             type='text'
             value={podTitle}
@@ -89,23 +104,6 @@ class PodsBase extends Component {
     );
   }
 }
-
-const PodList = ({ pods, onRemovePod }) => (
-  <ul>
-    {pods.map(pod => (
-      <PodItem key={pod.uid} pod={pod} onRemovePod={onRemovePod} />
-    ))}
-  </ul>
-);
-
-const PodItem = ({ pod, onRemovePod }) => (
-  <li>
-    <strong>{pod.podTitle}</strong>
-    <button type='button' onClick={() => onRemovePod(pod.uid)}>
-      Delete
-    </button>
-  </li>
-);
 
 const Pods = withFirebase(PodsBase);
 

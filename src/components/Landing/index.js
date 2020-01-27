@@ -4,6 +4,7 @@ import { useFirebase } from '../Firebase';
 
 const Landing = props => {
   const [users, setUsers] = React.useState(null);
+  const [pods, setPods] = React.useState([]);
 
   const firebase = useFirebase();
 
@@ -19,19 +20,65 @@ const Landing = props => {
         })
       );
     });
+    firebase.pods().on('value', snapshot => {
+      const podsObject = snapshot.val();
+      setPods(
+        Object.keys(podsObject).map(podId => {
+          return {
+            uid: podId,
+            ...podsObject[podId]
+          };
+        })
+      );
+    });
+    return () => {
+      firebase.users().off();
+      firebase.pods().off();
+    };
   }, [firebase]);
 
   if (!users) return null;
 
+  function getRandomPhotoNumber() {
+    return Math.floor(Math.random() * Math.floor(99));
+  }
+
+  function getPhotoGender(gender) {
+    if (gender === 'male') {
+      return 'men';
+    }
+    return 'women';
+  }
+
+  const UserPod = podObject => {
+    const pod = podObject.podObject;
+    return <>{pod ? pod.podTitle : 'No Pod'}</>;
+  };
+
   return (
-    <div>
+    <>
       <h1>Landing</h1>
-      {users.map((user, index) => (
-        <div style={{ display: 'flex', alignItems: 'center' }} key={index}>
-          <span>{user.username}</span> <span>{user.email}</span>
-        </div>
-      ))}
-    </div>
+      <div className='user-grid'>
+        {users.map((user, index) => (
+          <div className='usercard' key={index}>
+            <div>
+              <img
+                src={`https://randomuser.me/api/portraits/${getPhotoGender(
+                  user.gender
+                )}/${getRandomPhotoNumber()}.jpg`}
+                alt=''
+              />
+            </div>
+
+            <span>Name: {user.username}</span>
+            <span>
+              Pod:{' '}
+              <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
+            </span>
+          </div>
+        ))}
+      </div>
+    </>
   );
 };
 
