@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useFirebase } from '../Firebase';
 import { useHistory } from 'react-router-dom';
 
 const CreateUser = () => {
-  const [username, setUsername] = React.useState('');
-  const [email, setEmail] = React.useState('');
-  const [pod, setPod] = React.useState('');
-  const [pods, setPods] = React.useState([]);
-  const [error, setError] = React.useState(null);
-  const [gender, setGender] = React.useState('male');
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+  const [pod, setPod] = useState('');
+  const [pods, setPods] = useState([]);
+  const [error, setError] = useState(null);
+  const [gender, setGender] = useState('male');
+  const [title, setTitle] = useState('');
+  const [move, setMove] = useState('');
 
   const history = useHistory();
-
   const firebase = useFirebase();
+  const limit = 746;
+
+  function getRandomInt() {
+    return Math.floor(Math.random() * Math.floor(limit));
+  }
 
   React.useEffect(() => {
+    async function fetchPokeMove() {
+      const response = await fetch(
+        `https://pokeapi.co/api/v2/move/?limit=${limit}`
+      )
+        .then(res => res.json())
+        .then(data => setMove(data.results[getRandomInt()].name))
+        .catch(error => console.log(error));
+      return response;
+    }
+
     firebase.pods().on('value', snapshot => {
       const podObject = snapshot.val();
 
@@ -29,6 +45,7 @@ const CreateUser = () => {
         setPods(null);
       }
     });
+    fetchPokeMove();
     return () => {
       firebase.pods().off();
     };
@@ -38,7 +55,7 @@ const CreateUser = () => {
     e.preventDefault();
     firebase
       .users()
-      .push({ username, email, gender, pod })
+      .push({ username, email, gender, pod, title })
       .then(
         success => {
           firebase
@@ -67,7 +84,8 @@ const CreateUser = () => {
     );
   }
   return (
-    <form onSubmit={handleSubmit}>
+    <form className='user-form' onSubmit={handleSubmit}>
+      <h1>{move}</h1>
       <input
         type='text'
         value={username}
@@ -79,6 +97,12 @@ const CreateUser = () => {
         value={email}
         onChange={e => setEmail(e.currentTarget.value)}
         placeholder='E-mail'
+      />
+      <input
+        type='text'
+        value={title}
+        onChange={e => setTitle(e.currentTarget.value)}
+        placeholder='Title'
       />
       <select
         onChange={e => setGender(e.target.value)}

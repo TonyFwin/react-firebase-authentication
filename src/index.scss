@@ -60,6 +60,19 @@ main {
     'content';
 }
 
+// user form
+.user-form {
+  display: flex;
+  flex-direction: column;
+  input {
+    margin: 10px 0;
+    padding: 0.5em;
+  }
+  select {
+    margin: 10px 0;
+  }
+}
+
 // Landing / user page
 .user-grid {
   display: grid;
