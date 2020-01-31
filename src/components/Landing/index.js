@@ -71,10 +71,12 @@ const Landing = props => {
             </div>
 
             <span>Name: {user.username}</span>
+            <span>Title: {user.title}</span>
             <span>
               Pod:{' '}
               <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
             </span>
+            <span>Move: {user.move}</span>
           </div>
         ))}
       </div>
