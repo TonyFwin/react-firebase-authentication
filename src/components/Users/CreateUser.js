@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFirebase } from '../Firebase';
 import { useHistory } from 'react-router-dom';
 
@@ -10,24 +10,47 @@ const CreateUser = () => {
   const [error, setError] = useState(null);
   const [gender, setGender] = useState('male');
   const [title, setTitle] = useState('');
+  // const [profilePicture, setProfilePicture] = useState('');
+  const [types, setTypes] = useState([
+    'normal',
+    'fighting',
+    'flying',
+    'poison',
+    'ground',
+    'rock',
+    'bug',
+    'ghost',
+    'steel',
+    'fire',
+    'water',
+    'grass',
+    'electric',
+    'psychic',
+    'ice',
+    'dragon',
+    'dark',
+    'fairy'
+  ]);
+  const [type, setType] = useState('');
   const [moves, setMoves] = useState([]);
+
+  //TODO Create functionality to allow user to choose a move set after type has been picked
 
   const history = useHistory();
   const firebase = useFirebase();
-  const limit = 555;
-
-  function getRandomInt() {
+  const moveLimit = 600;
+  function getRandomInt(limit) {
     return Math.floor(Math.random() * Math.floor(limit));
   }
 
-  React.useEffect(() => {
+  useEffect(() => {
     async function fetchPokeMove() {
-      await fetch(`https://pokeapi.co/api/v2/move/?limit=${limit}`)
+      await fetch(`https://pokeapi.co/api/v2/move/?limit=${moveLimit}`)
         .then(res => res.json())
         .then(data =>
           setMoves([
-            data.results[getRandomInt()].name.replace(/-/g, ' '),
-            data.results[getRandomInt()].name.replace(/-/g, ' ')
+            data.results[getRandomInt(600)].name.replace(/-/g, ' '),
+            data.results[getRandomInt(600)].name.replace(/-/g, ' ')
           ])
         )
         .catch(error => console.log(error));
@@ -52,13 +75,13 @@ const CreateUser = () => {
     return () => {
       firebase.pods().off();
     };
-  }, [firebase]);
+  }, [firebase, gender]);
 
   const handleSubmit = e => {
     e.preventDefault();
     firebase
       .users()
-      .push({ username, email, gender, pod, title, moves })
+      .push({ username, email, gender, pod, title, moves, type })
       .then(
         success => {
           firebase
@@ -123,6 +146,18 @@ const CreateUser = () => {
         >
           <option name='male'>Male</option>
           <option value='female'>Female</option>
+        </select>
+        <select
+          onChange={e => setType(e.currentTarget.value)}
+          name='types'
+          id='types'
+          value={type}
+        >
+          {types.map(type => (
+            <option key={type} value={type}>
+              {type}
+            </option>
+          ))}
         </select>
         <select
           onChange={e => setPod(e.currentTarget.value)}

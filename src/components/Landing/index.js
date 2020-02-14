@@ -76,7 +76,12 @@ const Landing = props => {
               Pod:{' '}
               <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
             </span>
-            <span>Move: {user.move}</span>
+            <span>
+              <ul>
+                {user.moves &&
+                  user.moves.map(move => <li key={move}>{move}</li>)}
+              </ul>
+            </span>
           </div>
         ))}
       </div>
