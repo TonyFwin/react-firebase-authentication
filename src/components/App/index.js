@@ -10,6 +10,7 @@ import HomePage from '../Home';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import PodsPage from '../Pods';
+import UserPage from '../User';
 
 import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
@@ -32,6 +33,7 @@ const App = () => {
           <Route exact path={ROUTES.PODS} component={PodsPage} />
           <Route exact path={ROUTES.ACCOUNT} component={AccountPage} />
           <Route path={ROUTES.ADMIN} component={AdminPage} />
+          <Route path={ROUTES.USER} component={UserPage} />
         </main>
       </div>
     </Router>
