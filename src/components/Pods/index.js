@@ -9,9 +9,9 @@ import { withFirebase } from '../Firebase';
 const PodsPage = () => (
   <div>
     <h1>Pods</h1>
-    <div>
+    <>
       <Pods />
-    </div>
+    </>
   </div>
 );
 
@@ -80,6 +80,22 @@ class PodsBase extends Component {
 
     return (
       <div>
+        <div>
+          <h2>Add new pod</h2>
+          <form
+            className='small-form'
+            onSubmit={event => this.onCreatePod(event)}
+          >
+            <input
+              type='text'
+              value={podTitle}
+              onChange={this.onChangePodTitle}
+            />
+            <button className='button primary small' type='submit'>
+              Send
+            </button>
+          </form>
+        </div>
         {loading && <div>Loading...</div>}
 
         {pods ? (
@@ -91,15 +107,6 @@ class PodsBase extends Component {
         ) : (
           <div>There are no pods...</div>
         )}
-
-        <form onSubmit={event => this.onCreatePod(event)}>
-          <input
-            type='text'
-            value={podTitle}
-            onChange={this.onChangePodTitle}
-          />
-          <button type='submit'>Send</button>
-        </form>
       </div>
     );
   }

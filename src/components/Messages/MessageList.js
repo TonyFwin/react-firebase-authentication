@@ -3,7 +3,7 @@ import React from 'react';
 import MessageItem from './MessageItem';
 
 const MessageList = ({ messages, onEditMessage, onRemoveMessage }) => (
-  <ul className='messages'>
+  <div className='message-list'>
     {messages.map(message => (
       <MessageItem
         key={message.uid}
@@ -12,7 +12,7 @@ const MessageList = ({ messages, onEditMessage, onRemoveMessage }) => (
         onRemoveMessage={onRemoveMessage}
       />
     ))}
-  </ul>
+  </div>
 );
 
 export default MessageList;

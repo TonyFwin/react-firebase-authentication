@@ -92,10 +92,14 @@ class Messages extends Component {
     return (
       <AuthUserContext.Consumer>
         {authUser => (
-          <div className='usercard'>
+          <div className='messages'>
             {!loading && messages && (
-              <button type='button' onClick={this.onNextPage}>
-                More
+              <button
+                className='button primary small'
+                type='button'
+                onClick={this.onNextPage}
+              >
+                Load More
               </button>
             )}
 
@@ -115,11 +119,18 @@ class Messages extends Component {
             )}
 
             {!messages && <div>There are no messages ...</div>}
-
-            <form onSubmit={event => this.onCreateMessage(event, authUser)}>
-              <input type='text' value={text} onChange={this.onChangeText} />
-              <button type='submit'>Send</button>
-            </form>
+            <div>
+              <h2>Add New Message</h2>
+              <form
+                className='small-form'
+                onSubmit={event => this.onCreateMessage(event, authUser)}
+              >
+                <input type='text' value={text} onChange={this.onChangeText} />
+                <button className='button primary small' type='submit'>
+                  Send
+                </button>
+              </form>
+            </div>
           </div>
         )}
       </AuthUserContext.Consumer>

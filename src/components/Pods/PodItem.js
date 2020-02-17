@@ -33,7 +33,7 @@ class PodItem extends Component {
     const { editMode, editText } = this.state;
 
     return (
-      <li>
+      <div className='pod-list-item'>
         {editMode ? (
           <input
             type='text'
@@ -43,22 +43,42 @@ class PodItem extends Component {
         ) : (
           <strong>{pod.podTitle}</strong>
         )}
-        {editMode ? (
-          <span>
-            <button onClick={this.onSaveEditText}>Save</button>
-            <button onClick={this.onToggleEditMode}>Reset</button>
-          </span>
-        ) : (
-          <button type='button' onClick={this.onToggleEditMode}>
-            Edit
-          </button>
-        )}
-        {!editMode && (
-          <button type='button' onClick={() => onRemovePod(pod.uid)}>
-            Delete
-          </button>
-        )}
-      </li>
+        <div>
+          {editMode ? (
+            <span>
+              <button
+                className='button primary small'
+                onClick={this.onSaveEditText}
+              >
+                Save
+              </button>
+              <button
+                className='button primary warning'
+                onClick={this.onToggleEditMode}
+              >
+                Reset
+              </button>
+            </span>
+          ) : (
+            <button
+              className='button primary warning'
+              type='button'
+              onClick={this.onToggleEditMode}
+            >
+              Edit
+            </button>
+          )}
+          {!editMode && (
+            <button
+              className='button primary error'
+              type='button'
+              onClick={() => onRemovePod(pod.uid)}
+            >
+              Delete
+            </button>
+          )}
+        </div>
+      </div>
     );
   }
 }
