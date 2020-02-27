@@ -69,28 +69,31 @@ const Landing = props => {
               state: { user }
             }}
           >
-            <div className='usercard' key={index}>
-              <div>
+            <div className='usercard card' key={index}>
+              {user.profilePictureUrl ? (
                 <img
+                  className='card-image-top'
+                  src={user.profilePictureUrl}
+                  alt={user.username}
+                />
+              ) : (
+                <img
+                  className='card-image-top'
                   src={`https://randomuser.me/api/portraits/${getPhotoGender(
                     user.gender
                   )}/${getRandomPhotoNumber()}.jpg`}
-                  alt=''
+                  alt={user.username}
                 />
-              </div>
+              )}
 
-              <span>Name: {user.username}</span>
-              <span>Title: {user.title}</span>
-              <span>
-                Pod:{' '}
-                <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
-              </span>
-              <span>
-                <ul>
-                  {user.moves &&
-                    user.moves.map(move => <li key={move}>{move}</li>)}
-                </ul>
-              </span>
+              <div key={user.username} className='card-body'>
+                <h3>{user.username}</h3>
+                <span>{user.title}</span>
+                <p>
+                  Pod:{' '}
+                  <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
+                </p>
+              </div>
             </div>
           </Link>
         ))}

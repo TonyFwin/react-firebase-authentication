@@ -2,6 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useFirebase } from '../Firebase';
 import { useHistory } from 'react-router-dom';
 
+const pictureUrl = `https://randomuser.me/api/portraits/`;
+
+function getRandomInt(limit) {
+  return Math.floor(Math.random() * Math.floor(limit));
+}
+
+function getPhotoGender(gender) {
+  if (gender === 'male') {
+    return 'men';
+  }
+  return 'women';
+}
+
 const CreateUser = () => {
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
@@ -10,38 +23,14 @@ const CreateUser = () => {
   const [error, setError] = useState(null);
   const [gender, setGender] = useState('male');
   const [title, setTitle] = useState('');
-  // const [profilePicture, setProfilePicture] = useState('');
-  const [types, setTypes] = useState([
-    'normal',
-    'fighting',
-    'flying',
-    'poison',
-    'ground',
-    'rock',
-    'bug',
-    'ghost',
-    'steel',
-    'fire',
-    'water',
-    'grass',
-    'electric',
-    'psychic',
-    'ice',
-    'dragon',
-    'dark',
-    'fairy'
-  ]);
-  const [type, setType] = useState('');
+  const [profilePictureUrl, setProfilePictureUrl] = useState(
+    `${pictureUrl}${getPhotoGender(gender)}/${getRandomInt(99)}.jpg`
+  );
   const [moves, setMoves] = useState([]);
-
-  //TODO Create functionality to allow user to choose a move set after type has been picked
 
   const history = useHistory();
   const firebase = useFirebase();
   const moveLimit = 600;
-  function getRandomInt(limit) {
-    return Math.floor(Math.random() * Math.floor(limit));
-  }
 
   useEffect(() => {
     async function fetchPokeMove() {
@@ -81,12 +70,12 @@ const CreateUser = () => {
     e.preventDefault();
     firebase
       .users()
-      .push({ username, email, gender, pod, title, moves, type })
+      .push({ username, email, gender, pod, title, moves, profilePictureUrl })
       .then(
         success => {
           firebase
             .doSendSignInLinkToEmail(email, {
-              url: 'http://localhost:3000/signup',
+              url: 'https://my-firebase-project-413e9.firebaseapp.com/signup',
               handleCodeInApp: true
             })
             .then(() => {
@@ -100,6 +89,13 @@ const CreateUser = () => {
           setError(error);
         }
       );
+  };
+
+  const handleGenderChange = genderValue => {
+    setGender(genderValue);
+    setProfilePictureUrl(
+      `${pictureUrl}${getPhotoGender(genderValue)}/${getRandomInt(99)}.jpg`
+    );
   };
 
   if (error) {
@@ -140,24 +136,12 @@ const CreateUser = () => {
           placeholder='Title'
         />
         <select
-          onChange={e => setGender(e.target.value)}
+          onChange={e => handleGenderChange(e.currentTarget.value)}
           name='gender'
           value={gender}
         >
           <option name='male'>Male</option>
           <option value='female'>Female</option>
-        </select>
-        <select
-          onChange={e => setType(e.currentTarget.value)}
-          name='types'
-          id='types'
-          value={type}
-        >
-          {types.map(type => (
-            <option key={type} value={type}>
-              {type}
-            </option>
-          ))}
         </select>
         <select
           onChange={e => setPod(e.currentTarget.value)}
@@ -171,6 +155,11 @@ const CreateUser = () => {
             </option>
           ))}
         </select>
+        <input
+          type='text'
+          value={profilePictureUrl}
+          onChange={e => setProfilePictureUrl(e.currentTarget.value)}
+        />
         <button type='submit'>Submit</button>
       </form>
     </>

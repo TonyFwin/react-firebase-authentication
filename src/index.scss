@@ -120,7 +120,9 @@ main {
   background-clip: border-box;
   border: 0.5px solid rgba(0, 0, 0, 0.125);
   border-radius: 0.25rem;
-
+  .card-image-top {
+    width: 100%;
+  }
   .card-title {
     margin-bottom: 0.55rem;
   }
@@ -161,6 +163,11 @@ form {
   padding: 1rem;
   grid-template-columns: repeat(4, 1fr);
   grid-row-gap: 1rem;
+
+  .usercard {
+    margin: 0 10px;
+    height: 100%;
+  }
 }
 
 // Message list

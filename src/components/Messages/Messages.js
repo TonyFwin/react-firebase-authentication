@@ -104,7 +104,7 @@ class Messages extends Component {
             )}
 
             {loading && <div>Loading ...</div>}
-
+            {/* All users can edit any message, look into locking this down */}
             {messages && (
               <MessageList
                 messages={messages.map(message => ({

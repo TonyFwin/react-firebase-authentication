@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
+import { animated, useTransition } from 'react-spring';
 
 import Navigation from '../Navigation';
 import LandingPage from '../Landing';
