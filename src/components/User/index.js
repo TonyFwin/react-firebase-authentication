@@ -9,11 +9,26 @@ class UserPage extends Component {
     this.state = {
       loading: false,
       user: null,
+      pods: [],
       ...props.location.state
     };
   }
 
   componentDidMount() {
+    this.props.firebase.pods().on('value', snapshot => {
+      const podsObject = snapshot.val();
+
+      if (podsObject) {
+        const podList = Object.keys(podsObject).map(key => ({
+          ...podsObject[key],
+          uid: key
+        }));
+        this.setState({ pods: podList, loading: false });
+      } else {
+        this.setState({ pods: null, loading: false });
+      }
+    });
+
     if (this.state.user) {
       return;
     }
@@ -32,32 +47,60 @@ class UserPage extends Component {
 
   componentWillUnmount() {
     this.props.firebase.user(this.props.match.params.id).off();
+    this.props.firebase.pods().off();
   }
 
   render() {
-    const { user, loading } = this.state;
+    const { user, loading, pods } = this.state;
+    const { email, username, moves, title, profilePictureUrl } = user;
 
     return (
-      <div>
-        <h2>User ({this.props.match.params.id})</h2>
+      <>
         {loading && <div>Loading ...</div>}
 
         {user && (
-          <div>
-            <span>
-              <strong>ID:</strong> {user.uid}
-            </span>
-            <span>
-              <strong>E-Mail:</strong> {user.email}
-            </span>
-            <span>
-              <strong>Username:</strong> {user.username}
-            </span>
+          <div className='user'>
+            <div className='user-image'>
+              <img src={profilePictureUrl} alt={username} />
+            </div>
+            <div className='user-data'>
+              <ul className='user-data-list'>
+                <li>
+                  <span>Name: </span>
+                  {username}
+                </li>
+                <li>
+                  <span>E-mail: </span>
+                  {email}
+                </li>
+                <li>
+                  <span>Title: </span>
+                  {title}
+                </li>
+                <li>
+                  <span>Pod: </span>
+                  <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
+                </li>
+                <li className='pokemon-move'>
+                  <span>Quick Move: </span>
+                  {moves[0]}
+                </li>
+                <li className='pokemon-move'>
+                  <span>Charged Move: </span>
+                  {moves[1]}
+                </li>
+              </ul>
+            </div>
           </div>
         )}
-      </div>
+      </>
     );
   }
 }
+
+const UserPod = podObject => {
+  const pod = podObject.podObject;
+  return <>{pod ? pod.podTitle : 'Loading...'}</>;
+};
 
 export default withFirebase(UserPage);

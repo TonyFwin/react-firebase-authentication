@@ -23,6 +23,7 @@ const Landing = props => {
         })
       );
     });
+
     firebase.pods().on('value', snapshot => {
       const podsObject = snapshot.val();
       setPods(

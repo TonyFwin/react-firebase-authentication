@@ -142,7 +142,8 @@ form {
 }
 
 // user form
-.form-pokemon-move {
+.form-pokemon-move,
+.pokemon-move {
   text-transform: capitalize;
 }
 .user-form {
@@ -167,6 +168,28 @@ form {
   .usercard {
     margin: 0 10px;
     height: 100%;
+  }
+}
+
+.user {
+  display: flex;
+  flex-direction: column;
+  .user-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    img {
+      border-radius: 60px;
+    }
+  }
+  .user-data {
+    .user-data-list {
+      list-style: none;
+      color: black;
+      span {
+        color: grey;
+      }
+    }
   }
 }
 
