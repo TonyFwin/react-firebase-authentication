@@ -81,14 +81,18 @@ class UserPage extends Component {
                   <span>Pod: </span>
                   <UserPod podObject={pods.find(pod => pod.uid === user.pod)} />
                 </li>
-                <li className='pokemon-move'>
-                  <span>Quick Move: </span>
-                  {moves[0]}
-                </li>
-                <li className='pokemon-move'>
-                  <span>Charged Move: </span>
-                  {moves[1]}
-                </li>
+                {moves && (
+                  <>
+                    <li className='pokemon-move'>
+                      <span>Quick Move: </span>
+                      {moves[0]}
+                    </li>
+                    <li className='pokemon-move'>
+                      <span>Charged Move: </span>
+                      {moves[1]}
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
