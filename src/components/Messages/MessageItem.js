@@ -28,7 +28,7 @@ class MessageItem extends Component {
   };
 
   render() {
-    const { message, onRemoveMessage } = this.props;
+    const { authUser, message, onRemoveMessage } = this.props;
     const { editMode, editText } = this.state;
 
     return (
@@ -47,40 +47,42 @@ class MessageItem extends Component {
         <div className='card-body'>
           <div className='message'>
             {message.text} {message.editedAt && <span>(Edited)</span>}
-            <div>
-              {editMode ? (
-                <span>
-                  <button
-                    className='button extra-small primary'
-                    onClick={this.onSaveEditText}
-                  >
-                    Save
-                  </button>
+            {authUser.uid === message.userId && (
+              <div>
+                {editMode ? (
+                  <span>
+                    <button
+                      className='button extra-small primary'
+                      onClick={this.onSaveEditText}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className='button extra-small warning'
+                      onClick={this.onToggleEditMode}
+                    >
+                      Reset
+                    </button>
+                  </span>
+                ) : (
                   <button
                     className='button extra-small warning'
                     onClick={this.onToggleEditMode}
                   >
-                    Reset
+                    Edit
                   </button>
-                </span>
-              ) : (
-                <button
-                  className='button extra-small warning'
-                  onClick={this.onToggleEditMode}
-                >
-                  Edit
-                </button>
-              )}
-              {!editMode && (
-                <button
-                  className='button extra-small error'
-                  type='button'
-                  onClick={() => onRemoveMessage(message.uid)}
-                >
-                  Delete
-                </button>
-              )}
-            </div>
+                )}
+                {!editMode && (
+                  <button
+                    className='button extra-small error'
+                    type='button'
+                    onClick={() => onRemoveMessage(message.uid)}
+                  >
+                    Delete
+                  </button>
+                )}
+              </div>
+            )}
           </div>
         </div>
       </div>
