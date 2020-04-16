@@ -1,7 +1,7 @@
 import React from 'react';
 
 import MessageItem from './MessageItem';
-import { auth } from 'firebase';
+// import { auth } from 'firebase';
 
 const MessageList = ({
   authUser,

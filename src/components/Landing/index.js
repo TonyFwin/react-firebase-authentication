@@ -1,9 +1,7 @@
 import React from 'react';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-
-import { UserItem } from '../Users';
 
 const Landing = props => {
   const [users, setUsers] = React.useState(null);
