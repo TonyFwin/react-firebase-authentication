@@ -185,9 +185,13 @@ form {
     }
   }
   .user-data {
+    display: flex;
+    margin-top: 50px;
+    justify-content: center;
     .user-data-list {
       list-style: none;
       color: black;
+      column-count: 2;
       span {
         color: grey;
       }

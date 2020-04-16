@@ -104,7 +104,7 @@ class UserPage extends Component {
 
 const UserPod = podObject => {
   const pod = podObject.podObject;
-  return <>{pod ? pod.podTitle : 'Loading...'}</>;
+  return <>{pod ? pod.podTitle : 'No Pod'}</>;
 };
 
 export default withFirebase(UserPage);
