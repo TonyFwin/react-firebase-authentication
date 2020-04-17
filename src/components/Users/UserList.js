@@ -39,9 +39,9 @@ const UserList = () => {
     <div>
       <h2>Users</h2>
       {loading && <div>Loading ...</div>}
-      <ul>
+      <div className='user-list'>
         {users.map(user => (
-          <li key={user.uid}>
+          <div className='user-list-item' key={user.uid}>
             <span>
               <strong>ID:</strong> {user.uid}
             </span>
@@ -59,12 +59,12 @@ const UserList = () => {
                   state: { user }
                 }}
               >
-                Details
+                Edit
               </Link>
             </span>
-          </li>
+          </div>
         ))}
-      </ul>
+      </div>
     </div>
   );
 };

@@ -171,6 +171,20 @@ form {
   }
 }
 
+.user-list {
+  display: flex;
+  flex-wrap: wrap;
+  .user-list-item {
+    max-width: 50%;
+    display: flex;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    span {
+      width: 100%;
+    }
+  }
+}
+
 .user {
   display: flex;
   flex-direction: column;
