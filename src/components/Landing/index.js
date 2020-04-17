@@ -1,15 +1,15 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
 
 const Landing = props => {
-  const [users, setUsers] = React.useState(null);
-  const [pods, setPods] = React.useState([]);
+  const [users, setUsers] = useState(null);
+  const [pods, setPods] = useState([]);
 
   const firebase = useFirebase();
 
-  React.useEffect(() => {
+  useEffect(() => {
     firebase.users().on('value', snapshot => {
       const userObject = snapshot.val();
       setUsers(
